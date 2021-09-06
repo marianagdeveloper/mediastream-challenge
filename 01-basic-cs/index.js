@@ -30,8 +30,47 @@ const assert = require('assert');
 
 const database = require('./database.json');
 
+const filterUserWithHats = _.filter(database, user => user.hats.length > 0);
+// console.log(filterUserWithHats);
 
-const total = 0 // TODO
+const listHats = _.map(filterUserWithHats, hatsU => {
+    return _
+        .chain(hatsU.hats)
+        .groupBy('id')
+        .map((hatsU, key) => {
+            return {
+                id: key,
+                total: hatsU.length
+            }
+        })
+        .value()
+});
+
+// console.log(listHats);
+const flatHatList = listHats.flat();
+// console.log(flatHatList);
+
+const totalOfHats = _
+    .chain(flatHatList)
+    .groupBy('id')
+    .map((element, key) => {
+        return {
+            id: key,
+            total: element.length
+        }
+    })
+    .sortBy('total')
+    .reverse() //order from highest to lowest
+    .slice(0, 3) //first three values
+    .sumBy('total')
+    .value();
+
+console.log(totalOfHats);
+
+
+// const total = 0 // TODO
+const total = totalOfHats // TODO
+
 
 // Throws error on failure
 assert.equal(total, 23, `Invalid result: ${total} != 23`);

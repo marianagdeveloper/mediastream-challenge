@@ -22,4 +22,8 @@ const users = _.times(AMMOUNT.USERS, n => ({
   hats: _.sampleSize(hats, _.random(0, 5))
 }));
 
-console.log(JSON.stringify(users, null, 2));
+// console.log(JSON.stringify(users, null, 2));
+
+console.log(JSON.stringify(hats, null, 2));
+
+
